@@ -26,7 +26,7 @@
     <property name="title">
      <string>1. Image processing</string>
     </property>
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QPushButton" name="pushButton_ColorSeperation">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -39,7 +39,7 @@
       <string>1.1 Color seperation</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_2">
+    <widget class="QPushButton" name="pushButton_ColorTransformation">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -65,7 +65,7 @@
     <property name="title">
      <string>2. Image smoothing</string>
     </property>
-    <widget class="QPushButton" name="pushButton_3">
+    <widget class="QPushButton" name="pushButton_GaussionBlur">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -78,7 +78,7 @@
       <string>2.1 Gaussian blur</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_4">
+    <widget class="QPushButton" name="pushButton_BilateralFilter">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -91,7 +91,7 @@
       <string>2.2 Bilateral filter</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_5">
+    <widget class="QPushButton" name="pushButton_MedianFilter">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -104,7 +104,7 @@
       <string>2.3 Median filter</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_12">
+    <widget class="QPushButton" name="pushButton_LoadImage1">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -117,7 +117,7 @@
       <string>Load image 1</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_13">
+    <widget class="QPushButton" name="pushButton_LoadImage2">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -143,7 +143,7 @@
     <property name="title">
      <string>3. Edge detection</string>
     </property>
-    <widget class="QPushButton" name="pushButton_6">
+    <widget class="QPushButton" name="pushButton_SobelX">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -156,7 +156,7 @@
       <string>3.1 Sobel X</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_7">
+    <widget class="QPushButton" name="pushButton_SobleY">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -169,7 +169,7 @@
       <string>3.2 Sobel Y</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_8">
+    <widget class="QPushButton" name="pushButton_ComAndThreshold">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -182,7 +182,7 @@
       <string>3.3 Combination and threshold</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_9">
+    <widget class="QPushButton" name="pushButton_GradientAngle">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -208,7 +208,7 @@
     <property name="title">
      <string>4. Transform</string>
     </property>
-    <widget class="QTextEdit" name="textEdit">
+    <widget class="QTextEdit" name="textEdit_Rotation">
      <property name="geometry">
       <rect>
        <x>70</x>
@@ -218,7 +218,7 @@
       </rect>
      </property>
     </widget>
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="label_Rotation">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -231,7 +231,7 @@
       <string>Rotation</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_2">
+    <widget class="QLabel" name="label_deg">
      <property name="geometry">
       <rect>
        <x>150</x>
@@ -244,7 +244,7 @@
       <string>deg</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_3">
+    <widget class="QLabel" name="label_Scaling">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -257,7 +257,7 @@
       <string>Scaling</string>
      </property>
     </widget>
-    <widget class="QTextEdit" name="textEdit_2">
+    <widget class="QTextEdit" name="textEdit_Scaling">
      <property name="geometry">
       <rect>
        <x>70</x>
@@ -267,7 +267,7 @@
       </rect>
      </property>
     </widget>
-    <widget class="QTextEdit" name="textEdit_3">
+    <widget class="QTextEdit" name="textEdit_Tx">
      <property name="geometry">
       <rect>
        <x>70</x>
@@ -277,7 +277,7 @@
       </rect>
      </property>
     </widget>
-    <widget class="QTextEdit" name="textEdit_4">
+    <widget class="QTextEdit" name="textEdit_Ty">
      <property name="geometry">
       <rect>
        <x>70</x>
@@ -287,7 +287,7 @@
       </rect>
      </property>
     </widget>
-    <widget class="QLabel" name="label_4">
+    <widget class="QLabel" name="label_Tx">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -300,7 +300,7 @@
       <string>Tx</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_5">
+    <widget class="QLabel" name="label_Ty">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -313,7 +313,7 @@
       <string>Ty</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_6">
+    <widget class="QLabel" name="label_TxPixel">
      <property name="geometry">
       <rect>
        <x>150</x>
@@ -326,7 +326,7 @@
       <string>pixel</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_7">
+    <widget class="QLabel" name="label_TyPixel">
      <property name="geometry">
       <rect>
        <x>150</x>
@@ -339,7 +339,7 @@
       <string>pixel</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_14">
+    <widget class="QPushButton" name="pushButton_Transformation">
      <property name="geometry">
       <rect>
        <x>70</x>
@@ -365,7 +365,7 @@
     <property name="title">
      <string>5. Adaptive threshold</string>
     </property>
-    <widget class="QPushButton" name="pushButton_10">
+    <widget class="QPushButton" name="pushButton_GlobalThreshold">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -378,7 +378,7 @@
       <string>5.1 Global threshold</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_11">
+    <widget class="QPushButton" name="pushButton_LocalThreshold">
      <property name="geometry">
       <rect>
        <x>20</x>
