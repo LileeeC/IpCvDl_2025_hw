@@ -1,0 +1,2 @@
+.\venv\Scripts\activate 啟動虛擬機
+designer 打開ui設計界面
