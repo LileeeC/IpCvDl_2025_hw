@@ -18,9 +18,9 @@
     <property name="geometry">
      <rect>
       <x>60</x>
-      <y>40</y>
-      <width>151</width>
-      <height>111</height>
+      <y>120</y>
+      <width>201</width>
+      <height>101</height>
      </rect>
     </property>
     <property name="title">
@@ -31,7 +31,7 @@
       <rect>
        <x>10</x>
        <y>30</y>
-       <width>131</width>
+       <width>181</width>
        <height>23</height>
       </rect>
      </property>
@@ -43,8 +43,8 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>70</y>
-       <width>131</width>
+       <y>60</y>
+       <width>181</width>
        <height>23</height>
       </rect>
      </property>
@@ -57,9 +57,9 @@
     <property name="geometry">
      <rect>
       <x>60</x>
-      <y>170</y>
-      <width>151</width>
-      <height>171</height>
+      <y>230</y>
+      <width>201</width>
+      <height>121</height>
      </rect>
     </property>
     <property name="title">
@@ -70,7 +70,7 @@
       <rect>
        <x>10</x>
        <y>20</y>
-       <width>131</width>
+       <width>181</width>
        <height>23</height>
       </rect>
      </property>
@@ -83,7 +83,7 @@
       <rect>
        <x>10</x>
        <y>50</y>
-       <width>131</width>
+       <width>181</width>
        <height>23</height>
       </rect>
      </property>
@@ -96,38 +96,12 @@
       <rect>
        <x>10</x>
        <y>80</y>
-       <width>131</width>
+       <width>181</width>
        <height>23</height>
       </rect>
      </property>
      <property name="text">
       <string>2.3 Median filter</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_LoadImage1">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>110</y>
-       <width>131</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Load image 1</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_LoadImage2">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>140</y>
-       <width>131</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Load image 2</string>
      </property>
     </widget>
    </widget>
@@ -136,7 +110,7 @@
      <rect>
       <x>50</x>
       <y>360</y>
-      <width>201</width>
+      <width>281</width>
       <height>191</height>
      </rect>
     </property>
@@ -148,7 +122,7 @@
       <rect>
        <x>20</x>
        <y>20</y>
-       <width>131</width>
+       <width>181</width>
        <height>23</height>
       </rect>
      </property>
@@ -161,7 +135,7 @@
       <rect>
        <x>20</x>
        <y>50</y>
-       <width>131</width>
+       <width>181</width>
        <height>23</height>
       </rect>
      </property>
@@ -173,8 +147,8 @@
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>90</y>
-       <width>161</width>
+       <y>80</y>
+       <width>241</width>
        <height>31</height>
       </rect>
      </property>
@@ -186,8 +160,8 @@
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>140</y>
-       <width>161</width>
+       <y>120</y>
+       <width>241</width>
        <height>31</height>
       </rect>
      </property>
@@ -199,25 +173,15 @@
    <widget class="QGroupBox" name="groupBox_4">
     <property name="geometry">
      <rect>
-      <x>270</x>
+      <x>300</x>
       <y>40</y>
-      <width>211</width>
+      <width>251</width>
       <height>201</height>
      </rect>
     </property>
     <property name="title">
      <string>4. Transform</string>
     </property>
-    <widget class="QTextEdit" name="textEdit_Rotation">
-     <property name="geometry">
-      <rect>
-       <x>70</x>
-       <y>20</y>
-       <width>81</width>
-       <height>21</height>
-      </rect>
-     </property>
-    </widget>
     <widget class="QLabel" name="label_Rotation">
      <property name="geometry">
       <rect>
@@ -234,7 +198,7 @@
     <widget class="QLabel" name="label_deg">
      <property name="geometry">
       <rect>
-       <x>150</x>
+       <x>190</x>
        <y>30</y>
        <width>47</width>
        <height>12</height>
@@ -255,36 +219,6 @@
      </property>
      <property name="text">
       <string>Scaling</string>
-     </property>
-    </widget>
-    <widget class="QTextEdit" name="textEdit_Scaling">
-     <property name="geometry">
-      <rect>
-       <x>70</x>
-       <y>50</y>
-       <width>81</width>
-       <height>21</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QTextEdit" name="textEdit_Tx">
-     <property name="geometry">
-      <rect>
-       <x>70</x>
-       <y>80</y>
-       <width>81</width>
-       <height>21</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QTextEdit" name="textEdit_Ty">
-     <property name="geometry">
-      <rect>
-       <x>70</x>
-       <y>110</y>
-       <width>81</width>
-       <height>21</height>
-      </rect>
      </property>
     </widget>
     <widget class="QLabel" name="label_Tx">
@@ -316,7 +250,7 @@
     <widget class="QLabel" name="label_TxPixel">
      <property name="geometry">
       <rect>
-       <x>150</x>
+       <x>190</x>
        <y>90</y>
        <width>47</width>
        <height>12</height>
@@ -329,7 +263,7 @@
     <widget class="QLabel" name="label_TyPixel">
      <property name="geometry">
       <rect>
-       <x>150</x>
+       <x>190</x>
        <y>120</y>
        <width>51</width>
        <height>16</height>
@@ -342,9 +276,9 @@
     <widget class="QPushButton" name="pushButton_Transformation">
      <property name="geometry">
       <rect>
-       <x>70</x>
+       <x>20</x>
        <y>160</y>
-       <width>75</width>
+       <width>151</width>
        <height>23</height>
       </rect>
      </property>
@@ -352,13 +286,53 @@
       <string>4. Transforms</string>
      </property>
     </widget>
+    <widget class="QLineEdit" name="lineEdit_Rotation">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>20</y>
+       <width>113</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_Scaling">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>50</y>
+       <width>113</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_Tx">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>80</y>
+       <width>113</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_Ty">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>110</y>
+       <width>113</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_5">
     <property name="geometry">
      <rect>
-      <x>270</x>
-      <y>270</y>
-      <width>211</width>
+      <x>300</x>
+      <y>250</y>
+      <width>251</width>
       <height>80</height>
      </rect>
     </property>
@@ -370,7 +344,7 @@
       <rect>
        <x>20</x>
        <y>20</y>
-       <width>141</width>
+       <width>201</width>
        <height>23</height>
       </rect>
      </property>
@@ -383,7 +357,7 @@
       <rect>
        <x>20</x>
        <y>50</y>
-       <width>141</width>
+       <width>201</width>
        <height>23</height>
       </rect>
      </property>
@@ -391,6 +365,32 @@
       <string>5.2 Local threshold</string>
      </property>
     </widget>
+   </widget>
+   <widget class="QPushButton" name="pushButton_LoadImage1">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>40</y>
+      <width>181</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Load image 1</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_LoadImage2">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>70</y>
+      <width>181</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Load image 2</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

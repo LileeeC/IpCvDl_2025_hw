@@ -12,16 +12,13 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         
-        # 儲存載入的影像
         self.image1 = None
         self.image2 = None
         
-        # 儲存 Q3 的中間結果
         self.sobel_x = None
         self.sobel_y = None
         self.normalized_combination = None
 
-        # 綁定載入影像按鈕
         self.ui.pushButton_LoadImage1.clicked.connect(self.load_image_1)
         self.ui.pushButton_LoadImage2.clicked.connect(self.load_image_2)
         
@@ -41,6 +38,11 @@ class MainWindow(QMainWindow):
 
         self.ui.pushButton_GlobalThreshold.clicked.connect(self.run_q5_1)
         self.ui.pushButton_LocalThreshold.clicked.connect(self.run_q5_2)
+
+        self.ui.lineEdit_Rotation.setText("0")
+        self.ui.lineEdit_Scaling.setText("1.0")
+        self.ui.lineEdit_Tx.setText("0")
+        self.ui.lineEdit_Ty.setText("0")
 
     def load_image_1(self):
         # QFileDialog.getOpenFileName
@@ -74,11 +76,9 @@ class MainWindow(QMainWindow):
             
         # split channels
         b, g, r = cv2.split(self.image1)
-
-        # establish zero channel
         zeros = np.zeros_like(b)
 
-        # merge to create single color images
+        # single color images
         b_image = cv2.merge([b, zeros, zeros])
         g_image = cv2.merge([zeros, g, zeros])
         r_image = cv2.merge([zeros, zeros, r])
@@ -92,15 +92,13 @@ class MainWindow(QMainWindow):
             print("請先載入 Image 1")
             return
 
-        # opencv gray method (perceptual method)
+        # Q1
         cv_gray = cv2.cvtColor(self.image1, cv2.COLOR_BGR2GRAY)
 
-        # equal weight average method
+        # Q2
         b, g, r = cv2.split(self.image1)
-        
-        # convert to float for accurate division
+        # float for accurate division
         avg_gray_f = (b.astype(float) / 3) + (g.astype(float) / 3) + (r.astype(float) / 3)
-        
         # convert back to np.uint8
         avg_gray = avg_gray_f.astype(np.uint8)
 
@@ -111,64 +109,44 @@ class MainWindow(QMainWindow):
         if self.image1 is None:
             print("請先載入 Image 1 (image1.jpg)")
             return
-        
-        window_name = "Gaussian Blur"
-        cv2.namedWindow(window_name)
+        kernel_sizes = (11, 11)
+        blur = cv2.GaussianBlur(self.image1, kernel_sizes, 0)
+        cv2.imshow("Gaussian Blur (m=5)", blur)
 
-        def q2_1_trackbar_callback(m):
-            if m == 0: m = 1 # min of m is 1
-            kernel_size = (2 * m + 1, 2 * m + 1)
-            
-            # sigmaX = 0 to let OpenCV compute it based on kernel size
-            blurred_image = cv2.GaussianBlur(self.image1, kernel_size, 0)
-            cv2.imshow(window_name, blurred_image)
+        # def q2_1_trackbar_callback(m):
+        #     if m == 0: 
+        #         m = 1 # min of m is 1
+        #     kernel_size = (2 * m + 1, 2 * m + 1)
+        #     # sigmaX = 0 to let OpenCV compute it based on kernel size
+        #     blurred_image = cv2.GaussianBlur(self.image1, kernel_size, 0)
+        #     cv2.imshow(window_name, blurred_image)
 
-        # build trackbar, m = 1 to 5
-        cv2.createTrackbar("m (1-5)", window_name, 1, 5, q2_1_trackbar_callback)
-        # initial call
-        q2_1_trackbar_callback(1)
+        # # build trackbar, m = 1 to 5
+        # cv2.createTrackbar("m (1-5)", window_name, 1, 5, q2_1_trackbar_callback)
+        # # initial call
+        # q2_1_trackbar_callback(1)
 
     def run_q2_2(self):
         if self.image1 is None:
             print("請先載入 Image 1 (image1.jpg)")
             return
-
-        window_name = "Bilateral Filter"
-        cv2.namedWindow(window_name)
-
-        def q2_2_trackbar_callback(m):
-            if m == 0: m = 1
-            
-            # kernel diameter d need to be odd
-            d = 2 * m + 1
-            sigma_color = 90
-            sigma_space = 90
-            bilateral_image = cv2.bilateralFilter(self.image1, d, sigma_color, sigma_space)
-            cv2.imshow(window_name, bilateral_image)
-
-        cv2.createTrackbar("m (1-5)", window_name, 1, 5, q2_2_trackbar_callback)
-        q2_2_trackbar_callback(1)
+        
+        d = 11 # diameter of each pixel neighborhood
+        sigmaColor = 90
+        sigmaSpace = 90
+        bilateral = cv2.bilateralFilter(self.image1, d, sigmaColor, sigmaSpace)
+        cv2.imshow("Bilateral Filter (m=5)", bilateral)
 
     def run_q2_3(self):
         if self.image2 is None:
             print("請先載入 Image 2 (image2.jpg)")
             return
 
-        window_name = "Median Filter"
-        cv2.namedWindow(window_name)
+        ksize = 11
+        median = cv2.medianBlur(self.image2, ksize)
+        cv2.imshow("Median Filter (m=5)", median)
 
-        def q2_3_trackbar_callback(m):
-            if m == 0: m = 1
-            
-            ksize = 2 * m + 1
-            median_image = cv2.medianBlur(self.image2, ksize)
-            cv2.imshow(window_name, median_image)
-
-        cv2.createTrackbar("m (1-5)", window_name, 1, 5, q2_3_trackbar_callback)
-        q2_3_trackbar_callback(1)
-
-    # 禁止使用 cv2.Sobel 和 cv2.filter2D 
-    def manual_convolve2d(self, image, kernel):
+    def convolve2d(self, image, kernel):
         img_h, img_w = image.shape
         ker_h, ker_w = kernel.shape
         
@@ -194,7 +172,7 @@ class MainWindow(QMainWindow):
         gray = cv2.cvtColor(self.image1, cv2.COLOR_BGR2GRAY)
         blur = cv2.GaussianBlur(gray, (3, 3), 0)
         sobel_x_kernel = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]], dtype=np.float64)
-        sobel_x_result = self.manual_convolve2d(blur, sobel_x_kernel)
+        sobel_x_result = self.convolve2d(blur, sobel_x_kernel)
         self.sobel_x = sobel_x_result
         
         sobel_x_display = cv2.normalize(np.abs(sobel_x_result), None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
@@ -208,7 +186,7 @@ class MainWindow(QMainWindow):
         gray = cv2.cvtColor(self.image1, cv2.COLOR_BGR2GRAY)
         blur = cv2.GaussianBlur(gray, (3, 3), 0)
         sobel_y_kernel = np.array([[-1, -2, -1], [ 0,  0,  0], [ 1,  2,  1]], dtype=np.float64)
-        sobel_y_result = self.manual_convolve2d(blur, sobel_y_kernel)
+        sobel_y_result = self.convolve2d(blur, sobel_y_kernel)
         self.sobel_y = sobel_y_result
         
         sobel_y_display = cv2.normalize(np.abs(sobel_y_result), None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
@@ -238,9 +216,9 @@ class MainWindow(QMainWindow):
             print("請先依序執行 3.1, 3.2, 3.3")
             return
             
-        # calculate gradient angles 
+        # gradient angles 
         angles_rad = np.arctan2(self.sobel_y, self.sobel_x)
-        # convert radians to degrees in [0, 360)
+        # radians -> degrees
         angles_deg = (np.degrees(angles_rad) + 360) % 360
         mask1 = cv2.inRange(angles_deg, 170, 190) 
         mask2 = cv2.inRange(angles_deg, 260, 280)
@@ -262,27 +240,26 @@ class MainWindow(QMainWindow):
         
         try:
             # read user inputs
-            angle = float(self.ui.textEdit_Rotation.text())
-            scale = float(self.ui.textEdit_Scaling.text())
-            tx = float(self.ui.textEdit_Tx.text())
-            ty = float(self.ui.textEdit_Ty.text())
+            angle = float(self.ui.lineEdit_Rotation.text())
+            scale = float(self.ui.lineEdit_Scaling.text())
+            tx = float(self.ui.lineEdit_Tx.text())
+            ty = float(self.ui.lineEdit_Ty.text())
             
         except ValueError:
-            # 如果使用者未填寫，使用 PDF 上的範例值
             print("輸入無效或為空，使用範例值: Angle=30, Scale=0.9, Tx=535, Ty=335")
             angle = 30.0  # 逆時針 30 度 
             scale = 0.9   
             tx = 535.0    
             ty = 335.0    
 
-        # get rotation + scaling matrix
+        # get rotation and scaling matrix
         # cv2.getRotationMatrix2D 的 angle 是逆時針
-        M_rs = cv2.getRotationMatrix2D(center, angle, scale)
+        M = cv2.getRotationMatrix2D(center, angle, scale)
         
         # translation
-        M_rs[0, 2] += tx
-        M_rs[1, 2] += ty
-        result = cv2.warpAffine(img, M_rs, (w, h))
+        M[0, 2] += tx
+        M[1, 2] += ty
+        result = cv2.warpAffine(img, M, (w, h))
         
         cv2.imshow("Transformed Image", result)
 
@@ -303,7 +280,7 @@ class MainWindow(QMainWindow):
             return
         gray = cv2.cvtColor(self.image1, cv2.COLOR_BGR2GRAY)
         
-        adaptive_image = cv2.adaptiveThreshold(
+        threshold_image = cv2.adaptiveThreshold(
             gray, 
             255, # maxValue
             cv2.ADAPTIVE_THRESH_MEAN_C, # adaptiveMethod
@@ -313,7 +290,7 @@ class MainWindow(QMainWindow):
         )
         
         cv2.imshow("QR Original (Grayscale)", gray)
-        cv2.imshow("Adaptive Threshold Result", adaptive_image)
+        cv2.imshow("Adaptive Threshold Result", threshold_image)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
