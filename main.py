@@ -234,34 +234,73 @@ class MainWindow(QMainWindow):
             print("請先載入 Image 1 (burger.png)")
             return
 
-        img = self.image1
-        h, w = img.shape[:2]
+        # self.image1 是 'burger.png'
+        burger_img = self.image1
+        burger_h, burger_w = burger_img.shape[:2]
+
+        # 1. 根據 PDF 建立一個 1920x1080 的黑色畫布
+        #
+        canvas_w = 1920
+        canvas_h = 1080
+        
+        # 建立三通道 (BGR) 的黑色畫布
+        # 確保 burger_img 也是三通道
+        if len(burger_img.shape) == 2: # 如果漢堡圖是灰階
+            burger_img = cv2.cvtColor(burger_img, cv2.COLOR_GRAY2BGR)
+        
+        black_canvas = np.zeros((canvas_h, canvas_w, 3), dtype=np.uint8)
+
+        # 2. 將 'burger.png' 貼到畫布的左上角 (0, 0)
+        #
+        
+        # 確保不會貼超出範圍 (雖然 burger.png 應該比較小)
+        h_end = min(burger_h, canvas_h)
+        w_end = min(burger_w, canvas_w)
+        
+        black_canvas[0:h_end, 0:w_end] = burger_img[0:h_end, 0:w_end]
+        
+        # 'img' 現在是我們 1920x1080 的 "Input Image"
+        img = black_canvas
+        
+        # 漢堡的中心點 C(240, 200) 是相對於 (0, 0) 座標系
+        #
         center = (240, 200) 
         
         try:
-            # read user inputs
+            # 3. 從 PyQt UI 讀取值
+            # !!! 確保 'lineEdit_Rotation' 等名稱與你的 UI 檔案一致 !!!
             angle = float(self.ui.lineEdit_Rotation.text())
             scale = float(self.ui.lineEdit_Scaling.text())
             tx = float(self.ui.lineEdit_Tx.text())
             ty = float(self.ui.lineEdit_Ty.text())
             
         except ValueError:
+            # 如果使用者未填寫，使用 PDF 上的範例值
             print("輸入無效或為空，使用範例值: Angle=30, Scale=0.9, Tx=535, Ty=335")
             angle = 30.0  # 逆時針 30 度 
             scale = 0.9   
             tx = 535.0    
             ty = 335.0    
+        except AttributeError:
+            print("錯誤：找不到 Q4 的輸入框元件。請檢查 interface.py 中的名稱。")
+            return
 
-        # get rotation and scaling matrix
-        # cv2.getRotationMatrix2D 的 angle 是逆時針
-        M = cv2.getRotationMatrix2D(center, angle, scale)
+        # 4. 取得旋轉和縮放矩陣 (以 center 為中心)
+        M_rs = cv2.getRotationMatrix2D(center, angle, scale)
         
-        # translation
-        M[0, 2] += tx
-        M[1, 2] += ty
-        result = cv2.warpAffine(img, M, (w, h))
+        # 5. 加上平移量
+        M_rs[0, 2] += tx
+        M_rs[1, 2] += ty
         
-        cv2.imshow("Transformed Image", result)
+        # 6. 套用仿射變換
+        #    - 來源是 'img' (1920x1080 的畫布)
+        #    - 輸出尺寸 (dsize) 也是 (1920, 1080)
+        #   
+        result = cv2.warpAffine(img, M_rs, (canvas_w, canvas_h))
+        
+        # 7. 顯示結果
+        cv2.imshow("Input Image (1920x1080)", img) # 顯示貼上漢堡的黑底
+        cv2.imshow("Transformed Image (Output)", result) # 顯示轉換後的結果
 
     def run_q5_1(self):
         if self.image1 is None:
