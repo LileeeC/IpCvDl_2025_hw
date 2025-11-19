@@ -54,9 +54,9 @@ class MainWindow(QMainWindow):
             if self.image1 is None:
                 print(f"Error: Unable to load image from {file_path}")
             else:
-                print(f"Loaded Image 1 from: {file_path}")
+                print(f"Loaded image 1 from: {file_path}")
                 # 順便顯示一下載入的影像 (可選)
-                cv2.imshow("Loaded Image 1", self.image1)
+                cv2.imshow("Image 1", self.image1)
 
     def load_image_2(self):
         file_path, _ = QFileDialog.getOpenFileName(self, "Load Image 2", "", "Image Files (*.png *.jpg *.bmp)")
@@ -66,8 +66,8 @@ class MainWindow(QMainWindow):
             if self.image2 is None:
                 print(f"Error: Unable to load image from {file_path}")
             else:
-                print(f"Loaded Image 2 from: {file_path}")
-                cv2.imshow("Loaded Image 2", self.image2)
+                print(f"Loaded image 2 from: {file_path}")
+                cv2.imshow("Image 2", self.image2)
 
     def run_q1_1(self):
         if self.image1 is None:
@@ -76,7 +76,7 @@ class MainWindow(QMainWindow):
             
         # split channels
         b, g, r = cv2.split(self.image1)
-        zeros = np.zeros_like(b)
+        zeros = np.zeros_like(b) # zeros : A blank (black) image (2D array filled with zeros) (640×452)
 
         # single color images
         b_image = cv2.merge([b, zeros, zeros])
@@ -102,14 +102,14 @@ class MainWindow(QMainWindow):
         # convert back to np.uint8
         avg_gray = avg_gray_f.astype(np.uint8)
 
-        cv2.imshow("CV_Gray (Perceptual)", cv_gray)
-        cv2.imshow("Avg_Gray (Average)", avg_gray)
+        cv2.imshow("cv_gray (Perceptual)", cv_gray)
+        cv2.imshow("avg_gray (Average)", avg_gray)
 
     def run_q2_1(self):
         if self.image1 is None:
-            print("請先載入 Image 1 (image1.jpg)")
+            print("請先載入 Image 1")
             return
-        kernel_sizes = (11, 11)
+        kernel_sizes = (11, 11) # m=5
         blur = cv2.GaussianBlur(self.image1, kernel_sizes, 0)
         cv2.imshow("Gaussian Blur (m=5)", blur)
 
@@ -128,18 +128,18 @@ class MainWindow(QMainWindow):
 
     def run_q2_2(self):
         if self.image1 is None:
-            print("請先載入 Image 1 (image1.jpg)")
+            print("請先載入 Image 1")
             return
         
         d = 11 # diameter of each pixel neighborhood
-        sigmaColor = 90
-        sigmaSpace = 90
+        sigmaColor = 90 # 像素之間的顏色差異對濾波結果的影響程度
+        sigmaSpace = 90 # 像素之間的距離對濾波結果的影響程度，當d>0時此參數無作用，但因輸入需要此參數，所以將其設置與sigmaSpace相等就好。
         bilateral = cv2.bilateralFilter(self.image1, d, sigmaColor, sigmaSpace)
         cv2.imshow("Bilateral Filter (m=5)", bilateral)
 
     def run_q2_3(self):
         if self.image2 is None:
-            print("請先載入 Image 2 (image2.jpg)")
+            print("請先載入 Image 2")
             return
 
         ksize = 11
@@ -149,18 +149,18 @@ class MainWindow(QMainWindow):
     def convolve2d(self, image, kernel):
         img_h, img_w = image.shape
         ker_h, ker_w = kernel.shape
-        
-        pad_h = ker_h // 2
+
+        pad_h = ker_h // 2 # 如果 kernel 是 3x3，3//2 = 1，表示上下左右各需要補 1 排像素
         pad_w = ker_w // 2
         
         # np.pad for zero padding
-        padded_image = np.pad(image, ((pad_h, pad_h), (pad_w, pad_w)), 'constant', constant_values=0).astype(np.float64)
-        output_image = np.zeros_like(image, dtype=np.float64)
+        padded_image = np.pad(image, ((pad_h, pad_h), (pad_w, pad_w)), 'constant', constant_values=0).astype(np.float64) # 'constant' 表示補固定值，constant_values=0 表示補 0 (Zero-padding)
+        output_image = np.zeros_like(image, dtype=np.float64) # 跟原始影像一樣大的全黑影像，用float64因為Sobel會產生負數，不能用 uint8 存
         # perform convolution
         for y in range(img_h):
             for x in range(img_w):
-                region = padded_image[y : y + ker_h, x : x + ker_w]
-                output_image[y, x] = np.sum(region * kernel)
+                region = padded_image[y : y + ker_h, x : x + ker_w] # 模擬kernel在影像上slide
+                output_image[y, x] = np.sum(region * kernel) # 相乘並加總
                 
         return output_image
 
@@ -171,11 +171,11 @@ class MainWindow(QMainWindow):
 
         gray = cv2.cvtColor(self.image1, cv2.COLOR_BGR2GRAY)
         blur = cv2.GaussianBlur(gray, (3, 3), 0)
-        sobel_x_kernel = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]], dtype=np.float64)
+        sobel_x_kernel = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]], dtype=np.float64) # 亮變暗會出現負值，所以要用浮點數計算
         sobel_x_result = self.convolve2d(blur, sobel_x_kernel)
         self.sobel_x = sobel_x_result
         
-        sobel_x_display = cv2.normalize(np.abs(sobel_x_result), None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
+        sobel_x_display = cv2.normalize(np.abs(sobel_x_result), None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U) # 取絕對值因為邊緣有正有負（白到黑）
         cv2.imshow("Sobel X", sobel_x_display)
 
     def run_q3_2(self):
@@ -185,11 +185,11 @@ class MainWindow(QMainWindow):
 
         gray = cv2.cvtColor(self.image1, cv2.COLOR_BGR2GRAY)
         blur = cv2.GaussianBlur(gray, (3, 3), 0)
-        sobel_y_kernel = np.array([[-1, -2, -1], [ 0,  0,  0], [ 1,  2,  1]], dtype=np.float64)
+        sobel_y_kernel = np.array([[-1, -2, -1], [0,  0,  0], [1,  2,  1]], dtype=np.float64)
         sobel_y_result = self.convolve2d(blur, sobel_y_kernel)
         self.sobel_y = sobel_y_result
         
-        sobel_y_display = cv2.normalize(np.abs(sobel_y_result), None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
+        sobel_y_display = cv2.normalize(np.abs(sobel_y_result), None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U) 
         cv2.imshow("Sobel Y", sobel_y_display)
 
     def run_q3_3(self):
@@ -220,9 +220,11 @@ class MainWindow(QMainWindow):
         angles_rad = np.arctan2(self.sobel_y, self.sobel_x)
         # radians -> degrees
         angles_deg = (np.degrees(angles_rad) + 360) % 360
+        # cv2.inRange(src, lower, upper) 會檢查 src 中的每個像素 s
         mask1 = cv2.inRange(angles_deg, 170, 190) 
         mask2 = cv2.inRange(angles_deg, 260, 280)
         
+        # 對 img 做 AND 運算，但只在 mask 是白色的地方進行
         result1 = cv2.bitwise_and(self.normalized_combination, self.normalized_combination, mask=mask1)
         result2 = cv2.bitwise_and(self.normalized_combination, self.normalized_combination, mask=mask2)
         
@@ -231,76 +233,53 @@ class MainWindow(QMainWindow):
 
     def run_q4_1(self):
         if self.image1 is None:
-            print("請先載入 Image 1 (burger.png)")
+            print("請先載入 Image 1")
             return
 
-        # self.image1 是 'burger.png'
         burger_img = self.image1
         burger_h, burger_w = burger_img.shape[:2]
 
-        # 1. 根據 PDF 建立一個 1920x1080 的黑色畫布
-        #
+        # 1920x1080 的黑色畫布
         canvas_w = 1920
         canvas_h = 1080
         
-        # 建立三通道 (BGR) 的黑色畫布
-        # 確保 burger_img 也是三通道
-        if len(burger_img.shape) == 2: # 如果漢堡圖是灰階
+        # 建立BGR的黑色畫布
+        # 確保是三通道
+        if len(burger_img.shape) == 2: # 如果是灰階
             burger_img = cv2.cvtColor(burger_img, cv2.COLOR_GRAY2BGR)
         
         black_canvas = np.zeros((canvas_h, canvas_w, 3), dtype=np.uint8)
 
-        # 2. 將 'burger.png' 貼到畫布的左上角 (0, 0)
-        #
-        
-        # 確保不會貼超出範圍 (雖然 burger.png 應該比較小)
+        # put image at (0, 0)
         h_end = min(burger_h, canvas_h)
         w_end = min(burger_w, canvas_w)
-        
         black_canvas[0:h_end, 0:w_end] = burger_img[0:h_end, 0:w_end]
-        
-        # 'img' 現在是我們 1920x1080 的 "Input Image"
         img = black_canvas
-        
-        # 漢堡的中心點 C(240, 200) 是相對於 (0, 0) 座標系
-        #
         center = (240, 200) 
         
         try:
-            # 3. 從 PyQt UI 讀取值
-            # !!! 確保 'lineEdit_Rotation' 等名稱與你的 UI 檔案一致 !!!
             angle = float(self.ui.lineEdit_Rotation.text())
             scale = float(self.ui.lineEdit_Scaling.text())
             tx = float(self.ui.lineEdit_Tx.text())
             ty = float(self.ui.lineEdit_Ty.text())
             
         except ValueError:
-            # 如果使用者未填寫，使用 PDF 上的範例值
             print("輸入無效或為空，使用範例值: Angle=30, Scale=0.9, Tx=535, Ty=335")
             angle = 30.0  # 逆時針 30 度 
             scale = 0.9   
             tx = 535.0    
             ty = 335.0    
         except AttributeError:
-            print("錯誤：找不到 Q4 的輸入框元件。請檢查 interface.py 中的名稱。")
+            print("找不到 Q4 的輸入框元件")
             return
 
-        # 4. 取得旋轉和縮放矩陣 (以 center 為中心)
-        M_rs = cv2.getRotationMatrix2D(center, angle, scale)
-        
-        # 5. 加上平移量
-        M_rs[0, 2] += tx
+        M_rs = cv2.getRotationMatrix2D(center, angle, scale) #rotation + scaling
+        M_rs[0, 2] += tx # translation
         M_rs[1, 2] += ty
-        
-        # 6. 套用仿射變換
-        #    - 來源是 'img' (1920x1080 的畫布)
-        #    - 輸出尺寸 (dsize) 也是 (1920, 1080)
-        #   
-        result = cv2.warpAffine(img, M_rs, (canvas_w, canvas_h))
-        
-        # 7. 顯示結果
-        cv2.imshow("Input Image (1920x1080)", img) # 顯示貼上漢堡的黑底
-        cv2.imshow("Transformed Image (Output)", result) # 顯示轉換後的結果
+
+        result = cv2.warpAffine(img, M_rs, (canvas_w, canvas_h)) # affine transformation: 把原始影像中的每一個像素搬移到新的位置
+        cv2.imshow("Input Image (1920x1080)", img)
+        cv2.imshow("Transformed Image (Output)", result)
 
     def run_q5_1(self):
         if self.image1 is None:
